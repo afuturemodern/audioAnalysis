@@ -14,7 +14,6 @@ using namespace Marsyas;
 using namespace std;
 
 
-//Utilizes aubioYin to extract frequencies
 int main(int argc, char *argv[]) {
 
 
@@ -63,25 +62,19 @@ int main(int argc, char *argv[]) {
     tls->updControl("SoundFileSourceHopper/src/mrs_bool/mixToMono", true);
 
 
-    tls->addMarSystem(mng.create("PlotSink", "signalPlot"));
+    tls->addMarSystem(mng.create("PlotSink", "signalPlot")); //outputs original signal
     tls->updControl("PlotSink/signalPlot/mrs_string/filename", "signal-" + signalName);
     tls->updControl("PlotSink/signalPlot/mrs_bool/single_file", true);
     tls->updControl("PlotSink/signalPlot/mrs_bool/sequence", false);
     tls->updControl("PlotSink/signalPlot/mrs_bool/no_ticks", true);
 
-    //tls->addMarSystem(mng.create("Spectrum", "spec"));
-    //MarSystem* s2 = mng.create("Series", "s2");
-    //tls->addMarSystem(mng.create("PowerSpectrum", "specMag"));
+    tls->addMarSystem(mng.create("AubioYin", "f0")); //fundamental frequency estimator
 
-    tls->addMarSystem(mng.create("AubioYin", "f0"));
-
-    //tls->addMarSystem(s2);
-
-    tls->addMarSystem(mng.create("PlotSink", "f0Plot"));
+    tls->addMarSystem(mng.create("PlotSink", "f0Plot")); //outputs fund. freq.
     tls->updControl("PlotSink/f0Plot/mrs_string/filename", "f0-" + signalName);
     tls->updControl("PlotSink/f0Plot/mrs_bool/single_file", true);
     tls->updControl("PlotSink/f0Plot/mrs_bool/sequence", false);
-   tls->updControl("PlotSink/f0Plot/mrs_bool/no_ticks", true);
+    tls->updControl("PlotSink/f0Plot/mrs_bool/no_ticks", true);
 
     /////////////////////////////////////////////////////////////////////
     // This loop runs (ticks) the system until the end of the soundfile
@@ -112,11 +105,4 @@ int main(int argc, char *argv[]) {
     delete tls;
 
     return 0;
-}
-
-
-void printSys(){
-
-    topLevelSeries->put_html(std::cout);
-    std::cout << *topLevelSeries;
 }
