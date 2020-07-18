@@ -7,18 +7,6 @@
 #include "marsyas/MATLABengine.h"
 #include "marsyas/common_source.h"
 
-//#include "/home/jonathan/Desktop/audioDSP/gnuplot-iostream/gnuplot-iostream.h"
-//#include "octave/oct.h"
-//#include "octave/Matrix.h"
-//#include "octave/builtins.h"
-//#include "octave/dim-vector.h"
-
-// ****LOAD HDD for VM****  sudo mount -t vboxsf music /media/music
-// "/media/john/New Volume/Ableton Samples/Sample Magic - G-House - WAV.REX.AIFF/WAV/SM White Label - G-House - Wav/Synth Loops/gh_syn120_vicesquad_Cm.wav"
-//"/media/john/New Volume/music/Claps - Wreck (320)/04 - Book of Love.wav"
-// /media/john/New Volume/music/RÜFÜS - Bloom (2016) [WEB 320]/09 - Until the Sun Needs to Rise
-// "/media/john/New Volume/Ableton Samples/Samplephonics - 80s Synthwave/Loops/Arp Loops/108_Cm_Arp_SP_02.wav"
-
 /* for G-House sample
 Length: 0 m 4 s
 Sampling frequency: 44100 Hz
@@ -46,6 +34,7 @@ using namespace Marsyas;
 using namespace std;
 
 
+//General processing
 int main(int argc, char *argv[]) {
 
 
@@ -68,30 +57,11 @@ int main(int argc, char *argv[]) {
     mrs_natural windowSize = 256;
     mrs_natural hopSize = 256;
     mrs_natural sampleCount = windowSize; //hops to be added for sample count
-
+    
     std::string fileName = "/media/john/New Volume/Ableton Samples/Sample Magic - G-House - WAV.REX.AIFF/WAV/SM White Label - G-House - Wav/Synth Loops/gh_syn120_vicesquad_Cm.wav";
-    //std::regex reg("(.*)");
+
     mrs_string signalName = "gh_syn120_vicesquad_Cm";
     string specMagFile = "specMag-" + signalName;
-    //std::smatch m;
-/*
-    try {
-
-      if (std::regex_match(fileName, m, reg) && m.size() > 1) {
-        signalName = m.str(1);
-      }
-
-      else {
-
-        signalName = "";
-      }
-    } catch (std::regex_error& e) {
-
-      std::cout << "An error occured";
-    }
-
-    std::cout << signalName << std::endl;
-*/
 
     MarSystemManager mng;
     //double Fs;
@@ -141,7 +111,8 @@ int main(int argc, char *argv[]) {
     midS->updControl("Sum/mid/mrs_bool/stereo", false);
     midS->updControl("Sum/mid/mrs_real/weight", 0.5);
     midS->updControl("Sum/mid/mrs_string/mode", "orig");
-    midS->addMarSystem(mng.create("PlotSink", "mid"));              // plotsink mid signal
+    
+    midS->addMarSystem(mng.create("PlotSink", "mid"));   // output mid signal
     midS->updControl("PlotSink/mid/mrs_string/filename", "mid-" + signalName);
     midS->updControl("PlotSink/mid/mrs_bool/single_file", true);
     midS->updControl("PlotSink/mid/mrs_bool/sequence", false);
@@ -315,12 +286,8 @@ int main(int argc, char *argv[]) {
       //mrs_realvec specMagVec = powerSpecSeries->getControl("PowerSpectrum/specMag/mrs_realvec/processedData")->to<mrs_realvec>();
       //std::cout << specMagVec << std::endl;
       sampleCount += hopSize;
-      //{
-      //  specMagMatrix.appendRealvec(specMagVec);
 
-      //}
-      //MATLAB_PUT(specMagVec, "specMag");
-      //MATLAB_EVAL("plot(specMag)");
+
     }
     //cout << specMagMatrix.getSize() << endl;
     //specMagMatrix.write(specMagFile);
@@ -340,30 +307,6 @@ int main(int argc, char *argv[]) {
 
 
     delete tls;
-    //std::cout << energy;
-
-    //std::vector<boost::tuple<float, int>> autoCorr;
-
-    /*
-    // simple index-based iteration
-        for (std::size_t n = 0; n < left.getSamplesCount(); ++n) {
-
-        //std::cout << left.sample(i) << ",";
-        autoCorr.push_back(boost::make_tuple(float(n)/left.getSampleFrequency(), left.sample(n)));
-       }
-
-    // Don't forget to put "\n" at the end of each line!
-    gp << "set xrange [0: 10]\nset yrange [-255: 255]\n";
-    // '-' means read from stdin.  The send1d() function sends data to gnuplot's stdin.
-    gp << "plot '-' with vectors title 'autocorrelation'\n";
-    gp.send1d(autoCorr);
-    */
-
-    //raw correlation
-
-    //auto dft = Aquila::FftFactory::getFft(SIZE);
-
-    // Aquila::SpectrumType spectrum = dft->fft(left.toArray());
 
 
     return 0;
