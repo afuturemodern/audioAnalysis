@@ -1,22 +1,26 @@
 # audioAnalysis
 scripts for audio analysis using marsyas
-
 install marsyas per instructions given in marsyas-user.pdf
 
 if on Arch, install using package manager with indicated dependencies:
 
-sudo pacman -S marsyas
+`sudo pacman -S marsyas`
 
-else on linux, install marsyas source and dependencies:
+else on linux, install marsyas source (http://marsyas.info/downloads/sources.html) and dependencies:
 
-cd marsyas/
+`cd marsyas/`
 
-mkdir build
+`mkdir build`
 
-cd build
+`cd build`
 
-ccmake ..  #I have swig_ruby, vamp, max/msp, matlab, oss set to OFF then configure 
+`ccmake ..`   :I have swig_ruby, vamp, max/msp, matlab, oss set to OFF, then configure
 
-make
+`make`
 
-make install
+`make install`
+
+to compile .cpp files after installation:
+
+`make`     
+`./dataAnal`
