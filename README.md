@@ -31,7 +31,11 @@ After you're able to generate the ccmake targets without errors, run:
 
 `sudo make install`
 
-to compile .cpp files, cd to where you cloned this repo, and run:
+In FundamentalFrequency.cpp, you'll need to change `/home/sgnldsrptr/122GbBass.wav` to a locally-stored .wav file of your own.
+To compile .cpp files, cd to where you cloned this repo, and run:
 
 `make`     
 `./dataAnal`
+
+If you're getting the error "./dataAnal: error while loading shared libraries: libmarsyas.so: cannot open shared object file: No such file or directory", you'll need to run:
+`sudo /sbin/ldconfig -v`
